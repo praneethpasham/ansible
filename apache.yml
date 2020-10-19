@@ -1,0 +1,14 @@
+---
+  - hosts: all
+    become: yes
+    tasks:
+    - name: installing apache server on ansible node
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+    - name: uploading a file into apache server
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+ 
