@@ -1,0 +1,38 @@
+---
+  - hosts: all
+    become: yes
+    gather_facts: true
+    vars:
+      dbuser: admin
+      dbpass: admin123
+      dbname: praneeth1
+    tasks:
+    - name: installing mysql-server dependencies
+      package:
+       name: "{{item}}"
+       state: present
+       update_cache: yes
+      loop:
+       - mysql-server
+       - mysql-client
+       - python-mysqldb
+    - name: install python
+      apt:
+       name: python
+       state: present
+    - name: starting mysql service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+    - name: creating mysql user
+      mysql_user:
+         name: "{{dbuser}}"
+         password: "{{dbpass}}"
+         priv: '*.*:ALL'
+         state: present
+    - name: create mysql database
+      mysql_db:
+          name: "{{dbname}}"
+          state: present
+
