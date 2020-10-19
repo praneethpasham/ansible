@@ -1,0 +1,17 @@
+---
+  - hosts: all
+    become: yes
+    tasks:
+    - name : stoping apache server on node
+      apt:
+        name: apache2
+        state: absent
+    - name: installing nginx server on ansible node
+      apt:
+       name: nginx
+       state: present
+       update_cache: yes
+    - name: uploading a file in nginx server
+      copy:
+       src: nginx.html
+       dest: /var/www/html/nginx.html
